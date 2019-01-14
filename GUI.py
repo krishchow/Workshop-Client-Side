@@ -2,7 +2,9 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import sqlite3
 import os
-from GUIHelper import *
+from GUIClasses import JsonEditor,EntryWithPlaceholder
+from tkinter.scrolledtext import ScrolledText
+from APIHelper import *
 changedfont = 'ms sans serif'
 
 class Application():
@@ -23,7 +25,7 @@ class Application():
         self.root.title("PokeSearch")
         self.root.style = ttk.Style()
         self.root.style.theme_use('clam')
-        self.root.geometry('500x500')
+        self.root.geometry('700x600')
         self.bg = background
         self.loadMain()
         tk.mainloop()
@@ -41,13 +43,27 @@ class Application():
         serverEnt = EntryWithPlaceholder(topFrame, background=self.bg, font=(changedfont, 18, "bold"), textvariable=self.serverVar)
         serverEnt.setPlaceholder("Server IP")
         serverEnt.pack(side='left',fill='x',expand=True)
-        topFrame.pack(side='top',fill='both')
-        bottomFrame = tk.Frame(root, background=self.bg)
-        #ttk.Button(bottomFrame, text="Log Out", command=t,style='Main.TButton').pack(side='right')
-        #ttk.Button(bottomFrame, text="Add A New Account", command=lambda id=ID: addAccount(id,self.db),style='Main.TButton').pack(side='left')
-        bottomFrame.pack(side='bottom',fill='x')
+        topFrame.pack(side='top',fill='x')
+
         bodyFrame = tk.Frame(root, background=self.bg)
-        bodyFrame.pack(fill='both')
+        buttonFrame = tk.Frame(bodyFrame,background=self.bg)
+
+        jsonFrame = tk.Frame(bodyFrame,background=self.bg)
+        jsonText = JsonEditor(jsonFrame,bg='#ecf0f1')
+        jsonText.init()
+        tk.Button(buttonFrame,text="Validate Json",width=25,height=3,command=jsonText.validate_json).pack(side='top')
+        tk.Button(buttonFrame,text="Indent Json",width=25,height=3,command=jsonText.indent_json).pack(side='top')
+        
+
+        res = ScrolledText(jsonFrame,height=10,bg='#ecf0f1')
+        res.pack(side='bottom',fill='x',expand=True)
+        jsonText.pack(fill='both',expand=True)
+        jsonText.setError(res)
+
+        buttonFrame.pack(side='left',padx=0, pady=0,fill='both',expand=True)
+        jsonFrame.pack(side='right',padx=0, pady=0,fill='both',expand=True)
+        
+        bodyFrame.pack(side='top', fill='both',expand=True)
         root.pack(fill='both',expand=True)
 
 if __name__ == '__main__':

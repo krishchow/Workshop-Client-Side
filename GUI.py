@@ -11,16 +11,13 @@ class Application():
     def __init__(self):
         self.root = tk.Tk()
         self.keyVar = tk.StringVar()
-        self.key = ""
         self.serverVar = tk.StringVar()
-        self.serverIp = ""
         def callbackKey(*args):
-            key=self.keyVar.get()
-            return True
+            self.API.setKey(self.keyVar.get())
         self.keyVar.trace_add("write", callbackKey)
         def callbackServer(*args):
-            serverIp=self.serverVar.get()
-            return True
+            self.API.setIP(self.serverVar.get())
+        self.API = None
         self.keyVar.trace_add("write", callbackServer)
         self.root.title("PokeSearch")
         self.root.style = ttk.Style()
@@ -51,9 +48,14 @@ class Application():
         jsonFrame = tk.Frame(bodyFrame,background=self.bg)
         jsonText = JsonEditor(jsonFrame,bg='#ecf0f1')
         jsonText.init()
+        self.API=APIHelper(jsonText)
         tk.Button(buttonFrame,text="Validate Json",width=25,height=3,command=jsonText.validate_json).pack(side='top')
         tk.Button(buttonFrame,text="Indent Json",width=25,height=3,command=jsonText.indent_json).pack(side='top')
-        
+        tk.Button(buttonFrame,text="Get Pokemon",width=25,height=3,command=None).pack(side='top')
+        tk.Button(buttonFrame,text="Create Pokemon",width=25,height=3,command=None).pack(side='top')
+        tk.Button(buttonFrame,text="Get Your Pokemon",width=25,height=3,command=None).pack(side='top')
+        tk.Button(buttonFrame,text="Update Pokemon",width=25,height=3,command=None).pack(side='top')
+        tk.Button(buttonFrame,text="Delete Pokemon",width=25,height=3,command=None).pack(side='top')
 
         res = ScrolledText(jsonFrame,height=10,bg='#ecf0f1')
         res.pack(side='bottom',fill='x',expand=True)

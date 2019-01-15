@@ -101,7 +101,7 @@ class JsonEditor(ScrolledText):
             return False
         self.log("JSON is valid")
         return True
-        
+
     def tab(self,arg):
         self.insert(tk.INSERT, " " * 4)
         return 'break'

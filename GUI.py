@@ -4,7 +4,7 @@ import sqlite3
 import os
 from GUIClasses import JsonEditor,EntryWithPlaceholder
 from tkinter.scrolledtext import ScrolledText
-from APIHelper import *
+from APIHelper import APIHelper
 changedfont = 'ms sans serif'
 
 class Application():
@@ -12,13 +12,15 @@ class Application():
         self.root = tk.Tk()
         self.keyVar = tk.StringVar()
         self.serverVar = tk.StringVar()
+        self.API = None
         def callbackKey(*args):
-            self.API.setKey(self.keyVar.get())
+            if self.API:
+                self.API.setKey(self.keyVar.get())
         self.keyVar.trace_add("write", callbackKey)
         def callbackServer(*args):
-            self.API.setIP(self.serverVar.get())
-        self.API = None
-        self.keyVar.trace_add("write", callbackServer)
+            if self.API:
+                self.API.setIP(self.serverVar.get())
+        self.serverVar.trace_add("write", callbackServer)
         self.root.title("PokeSearch")
         self.root.style = ttk.Style()
         self.root.style.theme_use('clam')
@@ -53,7 +55,7 @@ class Application():
         tk.Button(buttonFrame,text="Indent Json",width=25,height=3,command=jsonText.indent_json).pack(side='top')
         tk.Button(buttonFrame,text="Get Pokemon",width=25,height=3,command=None).pack(side='top')
         tk.Button(buttonFrame,text="Create Pokemon",width=25,height=3,command=None).pack(side='top')
-        tk.Button(buttonFrame,text="Get Your Pokemon",width=25,height=3,command=None).pack(side='top')
+        tk.Button(buttonFrame,text="Get Your Pokemon",width=25,height=3,command=self.API.requestGET).pack(side='top')
         tk.Button(buttonFrame,text="Update Pokemon",width=25,height=3,command=None).pack(side='top')
         tk.Button(buttonFrame,text="Delete Pokemon",width=25,height=3,command=None).pack(side='top')
 

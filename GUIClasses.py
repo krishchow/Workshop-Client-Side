@@ -59,14 +59,19 @@ class JsonEditor(ScrolledText):
         self.ErrorText=scroll
 
     def indent_json(self,*args):
+        if self.get("1.0",tk.END).strip() == "":
+            self.log("Indentation not needed")
+            return True
         if self.validate_json():
             str_json = self.get("1.0",tk.END)
             clear(self)
             clear(self.ErrorText)
             self.insert('1.0', dumps(loads(str_json), indent=4))
             self.log("Indentation done")
+            return True
         else: 
             self.log("please correct errors first")
+            return False
 
     def validate_json(self,*args):
         clear(self.ErrorText)
@@ -101,6 +106,14 @@ class JsonEditor(ScrolledText):
             return False
         self.log("JSON is valid")
         return True
+
+    def insertJson(self,jsonData):
+        clear(self)
+        self.insert("1.0", jsonData)
+        self.indent_json()
+
+    def getActualJson(self):
+        return loads(self.get("1.0",tk.END))
 
     def tab(self,arg):
         self.insert(tk.INSERT, " " * 4)

@@ -51,8 +51,7 @@ class JsonEditor(ScrolledText):
     def init(self):
         self.insert("1.0", 
 """{ 
-    "a" : 1,
-    "b" : 2
+    "id" : 10
 }
 """)
     def setError(self,scroll):

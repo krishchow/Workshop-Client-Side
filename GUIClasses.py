@@ -113,6 +113,9 @@ class JsonEditor(ScrolledText):
 
     def getActualJson(self):
         return loads(self.get("1.0",tk.END))
+    
+    def clear(self):
+        clear(self)
 
     def tab(self,arg):
         self.insert(tk.INSERT, " " * 4)

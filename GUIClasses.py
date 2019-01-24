@@ -49,31 +49,28 @@ class JsonEditor(ScrolledText):
         self.ErrorText = None
     
     def init(self):
-        self.insert("1.0", 
-"""{ 
-    "id" : 10
-}
-""")
+        self.insert("1.0", """{ "id" : 10}""")
+        self.indent_json(LOG=False)
     def setError(self,scroll):
         self.ErrorText=scroll
 
-    def indent_json(self,*args):
+    def indent_json(self,*args,LOG=True):
         if self.get("1.0",tk.END).strip() == "":
-            self.log("Indentation not needed")
+            if LOG:self.log("Indentation not needed")
             return True
-        if self.validate_json():
+        if self.validate_json(LOG=LOG):
             str_json = self.get("1.0",tk.END)
             clear(self)
-            clear(self.ErrorText)
+            if LOG:clear(self.ErrorText)
             self.insert('1.0', dumps(loads(str_json), indent=4))
-            self.log("Indentation done")
+            if LOG:self.log("Indentation done")
             return True
         else: 
-            self.log("please correct errors first")
+            if LOG:self.log("please correct errors first")
             return False
 
-    def validate_json(self,*args):
-        clear(self.ErrorText)
+    def validate_json(self,*args,LOG=True):
+        if LOG:clear(self.ErrorText)
         str_json = self.get("1.0",tk.END)
         self.tag_delete("error")
         try:
@@ -81,7 +78,7 @@ class JsonEditor(ScrolledText):
         except ValueError as e:
             clear(self.ErrorText)
             msg = str(e.args)
-            self.log(msg)
+            if LOG:self.log(msg)
             mark = self.delim_re.search(msg)
             if not mark:
                 mark = dict(before = "0", after = "end", line = "0", col = "0")
@@ -101,9 +98,9 @@ class JsonEditor(ScrolledText):
             self.tag_config("error", background="yellow", foreground="red")
             return False
         except Exception as e:
-            self.log(e)
+            if LOG:self.log(e)
             return False
-        self.log("JSON is valid")
+        if LOG:self.log("JSON is valid")
         return True
 
     def insertJson(self,jsonData):

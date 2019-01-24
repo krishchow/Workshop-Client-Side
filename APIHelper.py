@@ -73,7 +73,9 @@ class APIHelper:
             "id":Integer : Required
         }
         '''
-        pass
+        o = requests.delete(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
+        o = o.content
+        self.json.insertJson(o)
     
     @requires_auth
     def requestPUT(self):
@@ -102,7 +104,9 @@ class APIHelper:
         }
         All body fields are required.
         '''
-        pass
+        o = requests.put(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
+        o = o.content
+        self.json.insertJson(o)
     
     @requires_auth
     def requestPOST(self):
@@ -119,7 +123,9 @@ class APIHelper:
             "id":Integer : Required
         }
         '''
-        pass
+        o = requests.post(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
+        o = o.content
+        self.json.insertJson(o)
 
     @requires_auth
     def requestPATCH(self):
@@ -131,6 +137,7 @@ class APIHelper:
         http://docs.python-requests.org/en/master/ 
 
         Header: {"key":String}
+        Body: 
         Body: 
         {
             "id": String, : Required
@@ -149,4 +156,6 @@ class APIHelper:
         }
         All fields except for id are optional.
         '''
-        pass
+        o = requests.patch(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
+        o = o.content
+        self.json.insertJson(o)

@@ -1,8 +1,6 @@
 '''
 Source: https://gist.github.com/jul/e9132abe8b5aeea573917191591fb90b
 Credits: https://gist.github.com/jul
-
-I migrated the code to python 3.6 and created a class!
 '''
 
 import tkinter as tk

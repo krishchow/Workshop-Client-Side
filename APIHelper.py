@@ -17,74 +17,72 @@ def requires_auth(f: Callable):
 
 class APIHelper:
     def __init__(self,jsonInput: JsonEditor):
-        self.serverIP = ""
-        self.userKey = ""
-        self.json=jsonInput
+        self.serverIP = "" # this variable direct references server IP address from the GUI
+        self.userKey = "" # this variable direct references user key from the GUI
+        self.json = jsonInput
         self.currentData = None
         self.jsonData = None
 
-    def setKey(self,key: str):
+    def setKey(self, key: str):
         '''
         This is a wrapper function that sets the instance key attribute
         '''
-        self.userKey=key
+        self.userKey = key
     
-    def setIP(self,ip: str):
+    def setIP(self, ip: str):
         '''
         This is a wrapper function that sets the instance serverIP attribute
         '''
         self.serverIP=ip
     
-    def getKey(self):
+    def requestGenKeyGET(self):
         '''
         Allows the client to generate a unique key, no parameters or json data required
         '''
         o = requests.get(self.serverIP)
-        o = o.content
-        self.json.insertJson(o)
+        content = o.content
+        self.json.insertJson(content)
 
     @requires_auth
-    def requestGET(self):
+    def requestUserGET(self):
         '''
         This function will access the server at the address self.serverIP
         with the HTTP GET type and the headers dictionary.
 
         Checkout this documentation to complete the order functions
-        http://docs.python-requests.org/en/master/ 
+        https://requests.readthedocs.io/en/master/ 
+
+        This function returns the users unique, private authentication key
 
         Header: {"key":String}
         '''
-        o = requests.get(self.serverIP, headers = {"key":self.userKey})
-        o = o.content
-        self.json.insertJson(o)
+        
 
     @requires_auth
-    def requestDELETE(self):
+    def requestPokeDELETE(self):
         '''
         This function will access the server at the address self.serverIP
-        with the HTTP GET type and the headers dictionary.
+        with the HTTP DELETE type and the headers dictionary.
 
         Checkout this documentation to complete the order functions
-        http://docs.python-requests.org/en/master/ 
+        https://requests.readthedocs.io/en/master/ 
 
         Header: {"key":String}
         Body: 
         {
-            "id":Integer : Required
+            "id":String : Required
         }
         '''
-        o = requests.delete(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
-        o = o.content
-        self.json.insertJson(o)
+        
     
     @requires_auth
-    def requestPUT(self):
+    def requestPokePUT(self):
         '''
         This function will access the server at the address self.serverIP
-        with the HTTP GET type and the headers dictionary.
+        with the HTTP PUT type and the headers dictionary.
 
         Checkout this documentation to complete the order functions
-        http://docs.python-requests.org/en/master/ 
+        https://requests.readthedocs.io/en/master/ 
 
         Header: {"key":String}
         Body: 
@@ -102,42 +100,38 @@ class APIHelper:
             "Type2": String,
             "isLegend": String
         }
+
         All body fields are required.
         '''
-        o = requests.put(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
-        o = o.content
-        self.json.insertJson(o)
-    
+        
+
     @requires_auth
-    def requestPOST(self):
+    def requestPokeGET(self):
         '''
         This function will access the server at the address self.serverIP
-        with the HTTP GET type and the headers dictionary.
+        with the HTTP POST type and the headers dictionary.
 
         Checkout this documentation to complete the order functions
-        http://docs.python-requests.org/en/master/ 
+        https://requests.readthedocs.io/en/master/ 
 
         Header: {"key":String}
         Body: 
         {
-            "id":Integer : Required
+            "id":String : Required
         }
         '''
-        o = requests.post(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
-        o = o.content
-        self.json.insertJson(o)
 
+        
     @requires_auth
-    def requestPATCH(self):
+    def requestPokePATCH(self):
         '''
         This function will access the server at the address self.serverIP
-        with the HTTP GET type and the headers dictionary.
+        with the HTTP PATCH type and the headers dictionary.
 
         Checkout this documentation to complete the order functions
-        http://docs.python-requests.org/en/master/ 
+        https://requests.readthedocs.io/en/master/ 
 
         Header: {"key":String}
-        Body: 
         Body: 
         {
             "id": String, : Required
@@ -154,8 +148,7 @@ class APIHelper:
             "Type2": String,
             "isLegend": String
         }
+        
         All fields except for id are optional.
         '''
-        o = requests.patch(self.serverIP, headers = {"key":self.userKey},json=self.json.getActualJson())
-        o = o.content
-        self.json.insertJson(o)
+        

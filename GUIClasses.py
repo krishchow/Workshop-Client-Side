@@ -3,7 +3,14 @@ from tkinter.scrolledtext import ScrolledText
 import os
 import re
 from json import dumps, loads
+'''
 
+
+Feel free to read this file, to understand the API for the JsonEditor class
+but please don't modify anything here! :)
+
+
+'''
 class EntryWithPlaceholder(tk.Entry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,9 +77,12 @@ class JsonEditor(ScrolledText):
             return False
 
     def validate_json(self,*args,LOG=True):
-        if LOG:clear(self.ErrorText)
+        if LOG:
+            clear(self.ErrorText)
         str_json = self.get("1.0",tk.END)
         self.tag_delete("error")
+        if len(str_json) == 0:
+            return True
         try:
             loads(str_json)
         except ValueError as e:
@@ -85,14 +95,11 @@ class JsonEditor(ScrolledText):
             else:
                 mark = mark.groupdict()
                 mark["after"] =  "1.0 +%sc" % (mark["after"] or (int(mark["before"]) +1))
-            
             before = "1.0 +%(before)sc" % mark
             has_delim = re.search("Expecting '(?P<delim>.)'", msg)
             if has_delim:
                 after = mark["after"] = "1.0 +%dc" % (int(mark["before"]) +1)
-            
                 self.insert(before,has_delim.groupdict()["delim"])
-                #text.delete(after)
             after = "%s" % mark["after"]
             self.tag_add("error", before, after)
             self.tag_config("error", background="yellow", foreground="red")
@@ -109,7 +116,10 @@ class JsonEditor(ScrolledText):
         self.indent_json()
 
     def getActualJson(self):
-        return loads(self.get("1.0",tk.END))
+        string = self.get("1.0",tk.END).strip()
+        if len(string) == 0:
+            return ""
+        return loads(string)
     
     def clear(self):
         clear(self)
@@ -117,5 +127,6 @@ class JsonEditor(ScrolledText):
     def tab(self,arg):
         self.insert(tk.INSERT, " " * 4)
         return 'break'
+    
     def log(self,msg):
         self.ErrorText.insert("1.0", (type(msg) is str and msg or repr(msg))+ "\n")

@@ -7,7 +7,11 @@ from tkinter.scrolledtext import ScrolledText
 from APIHelper import APIHelper
 changedfont = 'ms sans serif'
 '''
+
+
 Ignore this file! It is preconfigured so that everything works!
+
+
 '''
 class Application():
     def __init__(self):
@@ -52,15 +56,15 @@ class Application():
         jsonText = JsonEditor(jsonFrame,bg='#ecf0f1')
         jsonText.init()
         self.API=APIHelper(jsonText)
-        ttk.Button(buttonFrame,text="Generate Key",width=25,command=self.API.getKey,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Generate Key",width=25,command=self.API.requestGenKeyGET,style='My.TButton').pack(side='top',ipady=10)
         ttk.Button(buttonFrame,text="Validate Json",width=25,command=jsonText.validate_json,style='My.TButton').pack(side='top',ipady=10)
         ttk.Button(buttonFrame,text="Indent Json",width=25,command=jsonText.indent_json,style='My.TButton').pack(side='top',ipady=10)
         ttk.Button(buttonFrame,text="Clear Json",width=25,command=jsonText.clear,style='My.TButton').pack(side='top',ipady=10)
-        ttk.Button(buttonFrame,text="Get Pokemon",width=25,command=self.API.requestPOST,style='My.TButton').pack(side='top',ipady=10)
-        ttk.Button(buttonFrame,text="Create Pokemon",width=25,command=self.API.requestPUT,style='My.TButton').pack(side='top',ipady=10)
-        ttk.Button(buttonFrame,text="Get Your Pokemon",width=25,command=self.API.requestGET,style='My.TButton').pack(side='top',ipady=10)
-        ttk.Button(buttonFrame,text="Update Pokemon",width=25,command=self.API.requestPATCH,style='My.TButton').pack(side='top',ipady=10)
-        ttk.Button(buttonFrame,text="Delete Pokemon",width=25,command=self.API.requestDELETE,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Get All Your Pokemon",width=25,command=self.API.requestUserGET,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Get Pokemon",width=25,command=self.API.requestPokeGET,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Create Pokemon",width=25,command=self.API.requestPokePUT,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Update Pokemon",width=25,command=self.API.requestPokePATCH,style='My.TButton').pack(side='top',ipady=10)
+        ttk.Button(buttonFrame,text="Delete Pokemon",width=25,command=self.API.requestPokeDELETE,style='My.TButton').pack(side='top',ipady=10)
         res = ScrolledText(jsonFrame,height=10,bg='#ecf0f1')
         res.pack(side='bottom',fill='x',expand=True)
         jsonText.pack(fill='both',expand=True)
